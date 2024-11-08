@@ -10,17 +10,18 @@
 // System parameters
 #define MAX_PENDULUM_ERROR 45.0   // Maximum allowed angle deviation in degrees
 #define MAX_MOTOR_STEPS 800       // Maximum allowed steps from home position
-#define UPDATE_INTERVAL 2         // PID update interval in milliseconds
+#define UPDATE_INTERVAL 5         // PID update interval in milliseconds
 #define UPDATE_INTERVAL_MICROS (UPDATE_INTERVAL * 1000L)  // Convert to microseconds
 #define STEPS_PER_REV 800        // Steps per revolution of your stepper motor
 #define HOME_SPEED 2000          // Pulse delay for homing (microseconds)
-#define VERTICAL_POSITION 1916    // Raw encoder value at vertical position
+#define VERTICAL_POSITION 878    // Raw encoder value at vertical position
 #define MIN_STEP_TIME 600        // Minimum time for one complete step cycle (microseconds)
+#define PULSE_WIDTH 400          // Width of the HIGH pulse in microseconds
 
 AS5600L as5600;   // Use default Wire
 
 double Setpoint = 0, Input, Output;
-double Kp = 1.0, Ki = 0.0, Kd = 0.0;  
+double Kp = 0.2, Ki = 9.0, Kd = 0.0;  
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 // System state variables
@@ -95,8 +96,6 @@ void setup() {
     myPID.SetOutputLimits(-maxSteps, maxSteps);
     myPID.SetMode(AUTOMATIC);
 
-    // Home the motor on startup
-    homeMotor();
     lastUpdateTime = micros();
 }
 
