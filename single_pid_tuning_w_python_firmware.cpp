@@ -10,11 +10,11 @@
 // System parameters
 #define MAX_PENDULUM_ERROR 45.0   // Maximum allowed angle deviation in degrees
 #define MAX_MOTOR_STEPS 800       // Maximum allowed steps from home position
-#define UPDATE_INTERVAL 2         // PID update interval in milliseconds
+#define UPDATE_INTERVAL 5         // PID update interval in milliseconds
 #define UPDATE_INTERVAL_MICROS (UPDATE_INTERVAL * 1000L)  // Convert to microseconds
 #define STEPS_PER_REV 800        // Steps per revolution of your stepper motor
 #define HOME_SPEED 2000          // Pulse delay for homing (microseconds)
-#define VERTICAL_POSITION 1916    // Raw encoder value at vertical position
+#define VERTICAL_POSITION 878    // Raw encoder value at vertical position
 #define MIN_STEP_TIME 600        // Minimum time for one complete step cycle (microseconds)
 #define PULSE_WIDTH 400          // Width of the HIGH pulse in microseconds
 
@@ -174,7 +174,6 @@ void loop() {
                 Input = rawToDegrees(as5600.readAngle());
                 myPID.Compute();
                 
-                // Round Output to nearest integer for step count
                 int stepsToMove = floor(Output);
                 
                 if (stepsToMove != 0) {
